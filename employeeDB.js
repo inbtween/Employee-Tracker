@@ -1,4 +1,13 @@
+// Dependencies
+const express = require("express");
 const mysql = require("mysql");
+
+// Create express app instance.
+const app = express();
+
+// Set the port of our application
+// process.env.PORT lets the port be set by Heroku
+const PORT = process.env.PORT || 3006;
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -91,3 +100,8 @@ connection.connect((err) => {
   console.log(`connected as id ${connection.threadId}\n`);
   createRole();
 });
+
+// Start our server so that it can begin listening to client requests.
+app.listen(PORT, () =>
+  console.log(`Server listening on: http://localhost:${PORT}`)
+);
