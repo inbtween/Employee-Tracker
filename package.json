@@ -1,0 +1,28 @@
+{
+  "name": "Employee-Tracker",
+  "description": "To create an interface that makes it easy for non-developers to view and interact with information stored in databases. My challenge is to architect and build a solution for managing a company's employees using node, inquirer, and MySQL.",
+  "version": "1.0.0",
+  "main": "employeeDB.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node employeeDB.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inbtween/Employee-Tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/inbtween/Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/inbtween/Employee-Tracker#readme",
+  "dependencies": {
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.7",
+    "script": "^0.1.4",
+    "start": "^5.1.0"
+  },
+  "devDependencies": {}
+}
