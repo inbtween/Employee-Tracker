@@ -27,21 +27,21 @@ VALUES
 ("Ben", "Johnson", 1, NULL),
 ("Anna", "Thompson", 1, NULL),
 ("Beth", "Johansen", 1, NULL),
-("Andrea", "Montague", 1, 6),
+("Andrea", "Montague", 1, NULL),
 ("Dennis", "Brooks", 1, NULL),
 ("Gordon", "Robinson", 1, NULL),
 ("Julie", "Anderson", 1, 8),
 ("Jeremy", "Cark", 1, NULL);
 
 
+-- -- -- ////// --
+-- INSERT INTO department (name) VALUES ('Art Dept', 1);
+-- INSERT INTO department (name) VALUES ('Creative Services', 2);
+-- INSERT INTO department (name) VALUES ('On-Air Design', 3);
+-- INSERT INTO department (name) VALUES ('Off-Air Design', 4);
 
--- -- ////// --
-
--- INSERT INTO buyers (buyer_name) VALUES ('Kevon');
--- INSERT INTO buyers (buyer_name) VALUES ('Jane');
-
--- INSERT INTO pets (animal_breed, animal_name, price, buyer_id) VALUES ('wolf', 'Cassie', 195, 1);
--- INSERT INTO pets (animal_breed, animal_name, price, buyer_id) VALUES ('bear', 'Rachel', 745, 1);
--- INSERT INTO pets (animal_breed, animal_name, price, buyer_id) VALUES ('hawk', 'Tobias', 850, 2);
--- INSERT INTO pets (animal_breed, animal_name, price, buyer_id) VALUES ('gorilla', 'Marco', 400, 2);
--- INSERT INTO pets (animal_breed, animal_name, price, buyer_id) VALUES ('tiger', 'Jake', 300, 2);
+-- INSERT INTO parties (party_name, party_type, party_cost, client_id) VALUES ('Everybody Loves Raymond', 'tv', 500, 1);
+-- INSERT INTO parties (party_name, party_type, party_cost, client_id) VALUES ('Big Bang Theory', 'tv', 900, 1);
+-- INSERT INTO parties (party_name, party_type, party_cost, client_id) VALUES ('Top Gun', 'movie', 200, 2);
+-- INSERT INTO parties (party_name, party_type, party_cost, client_id) VALUES ('Whiskey', 'grown-up', 300, 2);
+-- INSERT INTO parties (party_name, party_type, party_cost, client_id) VALUES ('Cigar', 'grown-up', 250, 3);

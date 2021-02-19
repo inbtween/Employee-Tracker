@@ -45,21 +45,27 @@ SELECT * FROM department;
 SELECT * FROM role;
 SELECT * FROM employee;
 
--- Updates the row where the column name is... --
-UPDATE department
-SET has_name = true, 
-WHERE id = 101;
+-- --   * 
+-- ### Schema
 
-UPDATE role
-SET has_role = true, 
-WHERE id = 1;
+-- CREATE DATABASE parties_db;
 
-UPDATE employee
-SET has_role = true, 
-WHERE id = 10;
+-- USE parties_db;
 
---   * Add departments, roles, employees
+-- CREATE TABLE clients
+-- (
+-- 	id int NOT NULL AUTO_INCREMENT,
+-- 	client_name varchar(255) NOT NULL,
+-- 	PRIMARY KEY (id)
+-- );
 
-  -- * View departments, roles, employees
-
-  -- * Update employee roles
+-- CREATE TABLE parties
+-- (
+-- 	id int NOT NULL AUTO_INCREMENT,
+-- 	party_name varchar(255) NOT NULL,
+-- 	party_type varchar(255) NOT NULL,
+-- 	party_cost int NOT NULL,
+-- 	client_id int NOT NULL,
+-- 	PRIMARY KEY (id),
+-- 	FOREIGN KEY (client_id) REFERENCES clients(id)
+-- );
