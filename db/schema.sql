@@ -8,9 +8,9 @@ USE employee_db;
 
 CREATE TABLE department (
   -- Creates a numeric column called "id" which will automatically increment its default value as we create new rows --
-  id INTEGER PRIMARY KEY
-   -- Department name. Makes a string column called "name" which cannot contain null --
-  name VARCHAR(30) NULL,
+  id INTEGER PRIMARY KEY,
+   -- Makes a string column called "name" which cannot contain null --
+  name VARCHAR(30) NULL
 );
 
 CREATE TABLE role (
@@ -22,7 +22,9 @@ CREATE TABLE role (
   deptartment_id INTEGER NULL,
    -- Sets id as this table's primary key which means all data contained within it will be unique --
   PRIMARY KEY (id)
+  FOREIGN KEY (department_id) REFERENCES department(id)
 );
+
 
 CREATE TABLE employee (
   -- Creates a numeric column called "id" which will automatically increment its default value as we create new rows --
@@ -36,10 +38,10 @@ CREATE TABLE employee (
   manager_id INTEGER NULL,
    -- Sets id as this table's primary key which means all data contained within it will be unique --
   PRIMARY KEY (id)
-  FOREIGN KEY (role_id) REFERENCES role(id)
+  FOREIGN KEY (manager_id) REFERENCES employee(id)
 );
 
-SELECT * FROM deptartment;
+SELECT * FROM department;
 SELECT * FROM role;
 SELECT * FROM employee;
 
