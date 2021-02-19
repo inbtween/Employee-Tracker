@@ -11,7 +11,7 @@ INSERT INTO role
 (title, salary, deptartment_id)
 VALUES 
 ("Designer", 80000),
-("Animator", 100000)
+("Animator", 100000),
 ("Art Director", 140000),
 ("Creative Director", 180000),
 ("Producer", 140000),
@@ -31,7 +31,7 @@ VALUES
 ("Dennis", "Brooks", 1, NULL),
 ("Gordon", "Robinson", 1, NULL),
 ("Julie", "Anderson", 1, 8),
-("Jeremy", "Cark", 1, NULL),
+("Jeremy", "Cark", 1, NULL);
 
 
 
