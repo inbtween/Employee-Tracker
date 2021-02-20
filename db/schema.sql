@@ -21,7 +21,7 @@ CREATE TABLE role (
   salary DECIMAL(10,2) NULL,
   deptartment_id INTEGER NULL,
    -- Sets id as this table's primary key which means all data contained within it will be unique --
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
   FOREIGN KEY (department_id) REFERENCES department(id)
 );
 
@@ -37,35 +37,10 @@ CREATE TABLE employee (
   -- INT to hold reference to another employee that manages the employee being Created. This field may be null if the employee has no manager
   manager_id INTEGER NULL,
    -- Sets id as this table's primary key which means all data contained within it will be unique --
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
   FOREIGN KEY (manager_id) REFERENCES employee(id)
 );
 
 SELECT * FROM department;
 SELECT * FROM role;
 SELECT * FROM employee;
-
--- --   * 
--- ### Schema
-
--- CREATE DATABASE parties_db;
-
--- USE parties_db;
-
--- CREATE TABLE clients
--- (
--- 	id int NOT NULL AUTO_INCREMENT,
--- 	client_name varchar(255) NOT NULL,
--- 	PRIMARY KEY (id)
--- );
-
--- CREATE TABLE parties
--- (
--- 	id int NOT NULL AUTO_INCREMENT,
--- 	party_name varchar(255) NOT NULL,
--- 	party_type varchar(255) NOT NULL,
--- 	party_cost int NOT NULL,
--- 	client_id int NOT NULL,
--- 	PRIMARY KEY (id),
--- 	FOREIGN KEY (client_id) REFERENCES clients(id)
--- );

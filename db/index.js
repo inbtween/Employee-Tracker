@@ -1,17 +1,23 @@
 // This index in the fb folder is the ORM
-const inquirer = require("inquirer");
 const connection = require("./connection");
+const inquirer = require("inquirer");
 
-// class Employee {
-//   constructor(sql) {
-//     this.sql = sql;
-//   }
-//   createEmployee() {
-//     return this.connection.query("INSERT INTO employee table,");
-//   }
-// }
+class Database {
+  constructor(connection) {
+    this.connection = connection;
+  }
+  createEmployee(employee) {
+    return this.connection.query("INSERT INTO employee SET ?", employee);
+  }
+  createRole(role) {
+    return this.connection.query("INSERT INTO role SET ?", role);
+  }
+  createDepartment(department) {
+    return this.connection.query("INSERT INTO department SET ?", department);
+  }
+}
 
-function employee() {
+function createEmployee() {
   connection.query("SELECT * FROM employee", function (error, results) {
     if (error) throw error;
     console.log(results);
@@ -19,7 +25,7 @@ function employee() {
   });
 }
 
-function addEmployee() {
+function createEmployee() {
   inquirer
     .prompt([
       // {
@@ -60,9 +66,55 @@ function addEmployee() {
         function (error) {
           if (error) throw error;
           console.log("added Employee");
-          addEmployee();
+          createEmployee();
         };
     });
+  const createEmployee = () => {
+    // is this correct below?
+    inquirer.prompt().then((answers) => {
+      switch (answers.title) {
+        case "Designer":
+          createDesigner();
+          break;
+        case "Animator":
+          createAnimator();
+          break;
+        case "Art Director":
+          createArtDirector();
+          break;
+        case "Creative Director":
+          createCreativeDirector();
+          break;
+        case "Producer":
+          createProducer();
+          break;
+        case "Executive Producer":
+          createExecutiveProducer();
+          break;
+        // default:
+        //   buildTeam();
+      }
+    });
+    // is this correct?
+    inquirer.prompt().then((answers) => {
+      switch (answers.name) {
+        case "Art Dept":
+          createArtDepartment();
+          break;
+        case "Creative Services":
+          createCreativeServices();
+          break;
+        case "On-Air Design":
+          createOnAirDesign();
+          break;
+        case "Off-Air Design":
+          createOffAirDesign();
+          break;
+        default:
+          console.log("default");
+      }
+    });
+  };
 }
 
 function addRole() {
@@ -108,7 +160,7 @@ function addRole() {
     });
 }
 
-function addRole() {
+function addDepartment() {
   inquirer
     .prompt([
       // {
@@ -150,4 +202,4 @@ function addRole() {
 
 // let db = new Employee(connection);
 
-// let inputName = db.addEmployee(inputName);
+// let inputName = db.createEmployee(inputName);
