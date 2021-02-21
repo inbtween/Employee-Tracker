@@ -38,6 +38,7 @@ CREATE TABLE employee (
   manager_id INTEGER NULL,
    -- Sets id as this table's primary key which means all data contained within it will be unique --
   PRIMARY KEY (id),
+  FOREIGN KEY (role_id) REFERENCES role(id),
   FOREIGN KEY (manager_id) REFERENCES employee(id)
 );
 
