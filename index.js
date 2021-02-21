@@ -1,6 +1,7 @@
 // This index in the fb folder is the ORM
 const connection = require("./db/connection");
 const inquirer = require("inquirer");
+const cTable = require("console.table");
 
 class Database {
   constructor(connection) {
@@ -23,6 +24,57 @@ function createEmployee() {
     console.log(results);
     connection.end();
   });
+}
+
+function managerQuestions() {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        message: "What would you like to do?",
+        name: "choice",
+        choices: [
+          "View Employees?",
+          "View Employees by Roles?",
+          "View Emplyees by Department?",
+          "Update an Employee?",
+          "Add an Employee?",
+          "Add a Role?",
+          "Add to a Department?",
+        ],
+      },
+    ])
+    .then(function (val) {
+      switch (val.choice) {
+        case "View Employees?":
+          viewEmployees();
+          break;
+
+        case "View Employees by Roles?":
+          viewRoles();
+          break;
+
+        case "View Employees by Department?":
+          viewDepartments();
+          break;
+
+        case "Update an Employee?":
+          updateEmployee();
+          break;
+
+        case "Add an Employee?":
+          addEmployee();
+          break;
+
+        case "Add a Role?":
+          addRole();
+          break;
+
+        case "Add to a Department?":
+          addDepartment();
+          break;
+      }
+    });
 }
 
 function createEmployee() {
