@@ -25,7 +25,7 @@ class Database {
 }
 
 // manager questions
-startPrompt();
+// startPrompt();
 function startPrompt() {
   inquirer
     .prompt([
