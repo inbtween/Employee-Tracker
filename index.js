@@ -3,30 +3,30 @@ const connection = require("./db/connection");
 const inquirer = require("inquirer");
 const cTable = require("console.table");
 
+connection.connect((err) => {
+  if (err) throw err;
+  console.log(`connected as id ${connection.threadId}\n`);
+  startPrompt();
+});
+
 class Database {
   constructor(connection) {
     this.connection = connection;
   }
-  createEmployee(employee) {
+  addEmployee(employee) {
     return this.connection.query("INSERT INTO employee SET ?", employee);
   }
-  createRole(role) {
+  addRole(role) {
     return this.connection.query("INSERT INTO role SET ?", role);
   }
-  createDepartment(department) {
+  addDepartment(department) {
     return this.connection.query("INSERT INTO department SET ?", department);
   }
 }
 
-function createEmployee() {
-  connection.query("SELECT * FROM employee", function (error, results) {
-    if (error) throw error;
-    console.log(results);
-    connection.end();
-  });
-}
-
-function managerQuestions() {
+// manager questions
+startPrompt();
+function startPrompt() {
   inquirer
     .prompt([
       {
@@ -77,7 +77,21 @@ function managerQuestions() {
     });
 }
 
-function createEmployee() {
+// view employees
+function viewEmployees() {
+  connection.query(
+    "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(employee.first_name, ' ' ,employee.last_name) AS Manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id left join employee e on employee.manager_id = e.id;",
+    function (err, res) {
+      if (err) throw err;
+      console.table(res);
+      startPrompt();
+    }
+  );
+}
+
+// add employees
+// addEmployee();
+function addEmployee() {
   inquirer
     .prompt([
       {
@@ -101,70 +115,69 @@ function createEmployee() {
         message: "enter employee's manager id number.",
       },
     ])
-    .then((answers) => {
-      console.log(answers);
-      connection.query("INSERT INTO employee SET ?"),
-        {
-          first_name: answers.first_name,
-          last_name: answers.last_name,
-          role_id: answers.role_id,
-          manager_id: answers.manager_id,
-        },
+    .then((res) => {
+      console.table(res);
+      connection.query("INSERT INTO employee SET ?", {
+        first_name: res.first_name,
+        last_name: res.last_name,
+        role_id: res.role_id,
+        manager_id: res.manager_id,
+      }),
         function (error) {
           if (error) throw error;
-          console.log("added Employee");
-          createEmployee();
+          console.table(res);
+          startPrompt();
         };
     });
-  const createEmployee = () => {
+  const addEmployee = () => {
     // is this correct below?
-    inquirer.prompt().then((answers) => {
-      switch (answers.title) {
+    inquirer.prompt().then((res) => {
+      switch (res.title) {
         case "Designer":
-          createDesigner();
+          addDesigner();
           break;
         case "Animator":
-          createAnimator();
+          addAnimator();
           break;
         case "Art Director":
-          createArtDirector();
+          addArtDirector();
           break;
         case "Creative Director":
-          createCreativeDirector();
+          addCreativeDirector();
           break;
         case "Producer":
-          createProducer();
+          addProducer();
           break;
         case "Executive Producer":
-          createExecutiveProducer();
+          addExecutiveProducer();
           break;
         // default:
         //   buildTeam();
       }
     });
     // is this correct?
-    inquirer.prompt().then((answers) => {
-      switch (answers.name) {
+    inquirer.prompt().then((res) => {
+      switch (res.name) {
         case "Art Dept":
-          createArtDepartment();
+          addArtDepartment();
           break;
         case "Creative Services":
-          createCreativeServices();
+          addCreativeServices();
           break;
         case "On-Air Design":
-          createOnAirDesign();
+          addOnAirDesign();
           break;
         case "Off-Air Design":
-          createOffAirDesign();
+          addOffAirDesign();
           break;
         default:
-          console.log("default");
+          console.table(res);
       }
     });
   };
 }
 
-addRole();
+// add Role
 function addRole() {
   inquirer
     .prompt([
@@ -192,23 +205,21 @@ function addRole() {
         message: "enter employee's department id number.",
       },
     ])
-    .then((answers) => {
-      console.log(answers);
-      connection.query("INSERT INTO role SET ?"),
-        {
-          title: answers.title,
-          salary: answers.salary,
-          department_id: answers.department_id,
-        },
+    .then((res) => {
+      console.table(res);
+      connection.query("INSERT INTO role SET ?", {
+        title: res.title,
+        salary: res.salary,
+        department_id: res.department_id,
+      }),
         function (error) {
           if (error) throw error;
-          console.log("added Role");
-          addRole();
+          console.table(res);
+          startPrompt();
         };
     });
 }
-
-addDepartment();
+// add department
 function addDepartment() {
   inquirer
     .prompt([
@@ -224,26 +235,15 @@ function addDepartment() {
         ],
       },
     ])
-    .then((answers) => {
-      console.log(answers);
-      connection.query("INSERT INTO department SET ?"),
-        {
-          name: answers.name,
-        },
+    .then((res) => {
+      console.table(res);
+      connection.query("INSERT INTO department SET ?", {
+        name: res.name,
+      }),
         function (error) {
           if (error) throw error;
-          console.log("added Department");
-          addDepartment();
+          console.table(res);
+          startPrompt();
         };
     });
 }
-// constructor(id, first_name, last_name, role_id, manager_id)
-//     this.id = id;
-//     this.first_name = first_name;
-//     this.last_name = last_name;
-//     this.role_id = role;
-//     this.manager_id = manager_id;
-
-// let db = new Employee(connection);
-
-// let inputName = db.createEmployee(inputName);
