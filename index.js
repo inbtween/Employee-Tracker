@@ -89,92 +89,157 @@ function viewEmployees() {
   );
 }
 
+// view roles
+function viewRoles() {
+  connection.query(
+    "SELECT employee.first_name, employee.last_name, role.title AS Title FROM employee JOIN role ON employee.role_id = role.id;",
+    function (err, res) {
+      if (err) throw err;
+      console.table(res);
+      startPrompt();
+    }
+  );
+}
+
+// view department
+function viewDepartments() {
+  connection.query(
+    "SELECT employee.first_name, employee.last_name, department.name AS Department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id ORDER BY employee.id;",
+    function (err, res) {
+      if (err) throw err;
+      console.table(res);
+      startPrompt();
+    }
+  );
+}
+
+// select role
+var role = [];
+function selectRole() {
+  connection.query("SELECT * FROM role", function (err, res) {
+    if (err) throw err;
+    for (var i = 0; i < res.length; i++) {
+      role.push(res[i].title);
+    }
+  });
+  return role;
+}
+
+// select manager
+var manager = [];
+function selectManager() {
+  connection.query(
+    "SELECT first_name, last_name FROM employee WHERE manager_id IS NULL",
+    function (err, res) {
+      if (err) throw err;
+      for (var i = 0; i < res.length; i++) {
+        manager.push(res[i].first_name);
+      }
+    }
+  );
+  return manager;
+}
+
 // add employees
-// addEmployee();
 function addEmployee() {
   inquirer
     .prompt([
       {
         type: "input",
-        name: "first_name",
+        name: "firstname",
         message: "enter employee's first name.",
       },
       {
         type: "input",
-        name: "last_name",
+        name: "lastname",
         message: "enter employee's lastname.",
       },
       {
         type: "input",
-        name: "role_id",
-        message: "enter employee's role id number.",
+        name: "list",
+        message: "Select employee's role.",
+        choices: selectRole(),
       },
       {
         type: "input",
-        name: "manager_id",
-        message: "enter employee's manager id number.",
+        name: "rawlist",
+        message: "Select employee's manager.",
+        choices: selectManager(),
       },
     ])
-    .then((res) => {
-      console.table(res);
-      connection.query("INSERT INTO employee SET ?", {
-        first_name: res.first_name,
-        last_name: res.last_name,
-        role_id: res.role_id,
-        manager_id: res.manager_id,
-      }),
-        function (error) {
-          if (error) throw error;
-          console.table(res);
+    .then(function (val) {
+      var roleId = selectRole().indexOf(val.role) + 1;
+      // var managerId = selectManager().indexOf(val.manager_id) + 1;
+      connection.query(
+        "INSERT INTO employee SET ?",
+        {
+          first_name: val.firstName,
+          last_name: val.lastName,
+          role_id: val.roleId,
+          // manager_id: val.managerId,
+        },
+        function (err) {
+          if (err) throw err;
+          console.table(val);
           startPrompt();
-        };
+        }
+      );
     });
-  const addEmployee = () => {
-    // is this correct below?
-    inquirer.prompt().then((res) => {
-      switch (res.title) {
-        case "Designer":
-          addDesigner();
-          break;
-        case "Animator":
-          addAnimator();
-          break;
-        case "Art Director":
-          addArtDirector();
-          break;
-        case "Creative Director":
-          addCreativeDirector();
-          break;
-        case "Producer":
-          addProducer();
-          break;
-        case "Executive Producer":
-          addExecutiveProducer();
-          break;
-        // default:
-        //   buildTeam();
-      }
+}
+
+// update employees
+function updateEmployee() {
+  connection.query(
+    "SELECT employee.last_name, role.title, manager_id FROM employee JOIN role ON employee.role_id = role.id;",
+    function (err, res) {
+      if (err) throw err;
+      console.table(res);
+    }
+  );
+  inquirer
+    .prompt([
+      {
+        type: "rawlist",
+        name: "lastName",
+        choices: function () {
+          const lastName = [];
+          for (let i = 0; i < res.length; i++) {
+            lastName.push(res[i].last_name);
+          }
+          return lastName;
+        },
+        message: "enter employee's last name.",
+      },
+      {
+        type: "rawlist",
+        name: "role",
+        message: "Select employee's role.",
+        choices: selectRole(),
+      },
+      {
+        type: "input",
+        name: "rawlist",
+        message: "Select employee's manager.",
+        choices: selectManager(),
+      },
+    ])
+    .then(function (val) {
+      const roleId = selectRole().indexOf(val.role) + 1;
+      const managerId = selectManager().indexOf(val.choice) + 1;
+      connection.query(
+        "UPDATE employee SET WHERE ?",
+        {
+          last_name: val.lastName,
+          role_id: val.roleId,
+          manager_id: val.managerId,
+        },
+        function (err) {
+          if (err) throw err;
+          console.table(val);
+          startPrompt();
+        }
+      );
     });
-    // is this correct?
-    inquirer.prompt().then((res) => {
-      switch (res.name) {
-        case "Art Dept":
-          addArtDepartment();
-          break;
-        case "Creative Services":
-          addCreativeServices();
-          break;
-        case "On-Air Design":
-          addOnAirDesign();
-          break;
-        case "Off-Air Design":
-          addOffAirDesign();
-          break;
-        default:
-          console.table(res);
-      }
-    });
-  };
 }
 
 // add Role
@@ -182,9 +247,9 @@ function addRole() {
   inquirer
     .prompt([
       {
-        type: "input",
+        type: "list",
         name: "title",
-        message: "enter employee's title.",
+        message: "enter employee's title?",
         choices: [
           "Designer",
           "Animator",
@@ -205,18 +270,20 @@ function addRole() {
         message: "enter employee's department id number.",
       },
     ])
-    .then((res) => {
-      console.table(res);
-      connection.query("INSERT INTO role SET ?", {
-        title: res.title,
-        salary: res.salary,
-        department_id: res.department_id,
-      }),
+    .then(function (res) {
+      connection.query(
+        "INSERT INTO role SET ?",
+        {
+          title: res.title,
+          salary: res.salary,
+          department_id: res.department_id,
+        },
         function (error) {
           if (error) throw error;
           console.table(res);
           startPrompt();
-        };
+        }
+      );
     });
 }
 // add department
@@ -235,15 +302,17 @@ function addDepartment() {
         ],
       },
     ])
-    .then((res) => {
-      console.table(res);
-      connection.query("INSERT INTO department SET ?", {
-        name: res.name,
-      }),
+    .then(function (res) {
+      var query = connection.query(
+        "INSERT INTO department SET ? ",
+        {
+          name: res.name,
+        },
         function (error) {
           if (error) throw error;
           console.table(res);
           startPrompt();
-        };
+        }
+      );
     });
 }

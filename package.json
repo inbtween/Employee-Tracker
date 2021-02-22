@@ -5,7 +5,8 @@
   "main": "employeeDB.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node employeeDB.js"
+    "start": "node employeeDB.js",
+    "watch": "nodemon index.js"
   },
   "repository": {
     "type": "git",
