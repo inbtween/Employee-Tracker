@@ -20,7 +20,6 @@ const connection = mysql.createConnection({
 connection.connect((err) => {
   if (err) throw err;
   console.log(`connected as id ${connection.threadId}\n`);
-  startPrompt();
 });
 
 connection.query = util.promisify(connection.query);
